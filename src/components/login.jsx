@@ -4,10 +4,12 @@ import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';                                                  
 import { useNavigate } from 'react-router-dom';
 import{ BASE_URL } from '../utils/constants';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('sakshi.t@wes.co.in');
-  const [password, setPassword] = useState('S@kshi1234');
+  const [email, setEmail] = useState('khushi.yadav@wes.co.in');
+  const [password, setPassword] = useState('Khushi@123');
+  const [error, setError] = useState('');
    const dispatch = useDispatch();
    const navigate = useNavigate();
   const handleLogin = async (e) => {
@@ -22,9 +24,10 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/feed");
     } catch (err) {
-      console.error(err.response || err.message);
+      setError(err.res?.data?.message || 'Login failed. Please try again.');
+      console.error(err.res || err.message);
     }
-  };
+  }; 
 
   return (
   <div className="flex justify-center items-center min-h-screen bg-base-200">
@@ -46,7 +49,8 @@ const Login = () => {
         className="input input-bordered w-full mb-5"
         onChange={(e)=>setPassword(e.target.value)}
       />
-      
+      <p className="text-red-700 align-text-left">{error}</p>
+      <Link className="mb-2 text-left text-sm text-gray-300">Forgot Password?</Link>
       <div className="card-actions w-full">
         <button className="btn btn-primary w-full" onClick={handleLogin}>Login</button>
       </div>
